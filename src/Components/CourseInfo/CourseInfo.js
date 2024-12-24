@@ -10,11 +10,14 @@ function CourseInfo() {
     const newCart = [...cart, course];
     setCart(newCart);
   };
+  const handleClear=()=>{
+    setCart([])
+  }
   return (
     <div>
       <div className="row">
         <div className="col-md-4">
-          <Cart cart={cart} key={cart.id}></Cart>
+          <Cart cart={cart} key={cart.id} handleClear={handleClear}></Cart>
         </div>
         <div className="col-md-8">
           {course.map((course) => (

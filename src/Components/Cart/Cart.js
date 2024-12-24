@@ -5,13 +5,11 @@ const buttonStyle = {
   transition: "opacity 0.3s ease-in-out",
 };
 function Cart(props) {
-  const [cart, setCart] = useState(props.cart);
-  const [total, setTotal] = useState(
-    cart.reduce((sum, item) => sum + item.price, 0)
-  );
+  const [cart, setCart] = useState([]);
+  const [total, setTotal] = useState(0);
   useEffect(() => {
     setCart(props.cart);
-    setTotal(cart.reduce((sum, item) => sum + item.price, 0));
+    setTotal(props.cart.reduce((sum, item) => sum + item.price, 0));
   }, [props.cart]);
   console.log("cart", props.cart);
   //   const course = props.cart;
@@ -21,14 +19,16 @@ function Cart(props) {
 
   const handleClear = () => {
     if (cart.length > 0) {
-      const updatedCart = [...cart];
-      const removedItem = updatedCart.pop();
+      const updatedCart = cart.slice(0,-1)
+      const removedItem = cart[cart.length-1]
       setCart(updatedCart);
       setTotal((prev) => prev - removedItem.price);
-    }else{
-        setCart([])
-        setTotal(0)
     }
+    if (cart.length === 1) {
+        props.handleClear()
+        setTotal(0);
+        // setCart([])
+      }
     
   };
   return (
@@ -53,7 +53,7 @@ function Cart(props) {
         <button
           className="btn btn-warning ml-3"
           onClick={handleClear}
-          // disabled={cart.length === 0}
+          disabled={cart.length === 0}
         >
           Clear
         </button>
